@@ -1,0 +1,10 @@
+{
+  "name": "video-ts-media-host",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gen:redirects": "node scripts/gen-redirects.mjs",
+    "build": "node scripts/gen-redirects.mjs"
+  }
+}
+

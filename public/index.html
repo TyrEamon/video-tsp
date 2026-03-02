@@ -1,0 +1,565 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Library</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050507;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel-2: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.12);
+        --border-strong: rgba(255, 255, 255, 0.18);
+        --text: #f5f7fb;
+        --muted: rgba(245, 247, 251, 0.68);
+        --muted-2: rgba(245, 247, 251, 0.52);
+        --accent: #f43f5e;
+        --accent-2: #60a5fa;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+        background:
+          radial-gradient(circle at 100% 0%, rgba(244, 63, 94, 0.12), transparent 34%),
+          radial-gradient(circle at 0% 100%, rgba(96, 165, 250, 0.11), transparent 42%),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input {
+        font: inherit;
+        color: inherit;
+      }
+
+      .app {
+        width: min(1200px, 100%);
+        margin: 0 auto;
+        padding: 18px 14px 28px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: 18px;
+        padding: 14px;
+        backdrop-filter: blur(12px);
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .title-block h1 {
+        margin: 0;
+        font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+        letter-spacing: -0.02em;
+      }
+
+      .title-block p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .top-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: end;
+      }
+
+      .btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 9px 12px;
+        cursor: pointer;
+        transition: background-color 140ms ease, border-color 140ms ease;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--border-strong);
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid rgba(96, 165, 250, 0.6);
+        outline-offset: 2px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--panel-2);
+        padding: 6px 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px 12px;
+      }
+
+      .search span {
+        color: var(--muted-2);
+        font-size: 14px;
+      }
+
+      .search input {
+        border: 0;
+        outline: 0;
+        background: transparent;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .filters {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: end;
+      }
+
+      .pill {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background-color 140ms ease, border-color 140ms ease;
+      }
+
+      .pill[aria-pressed="true"] {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
+          rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.22);
+        color: #fff;
+      }
+
+      .list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .empty {
+        border: 1px dashed var(--border);
+        border-radius: 16px;
+        color: var(--muted);
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .card {
+        position: relative;
+        display: grid;
+        gap: 12px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02)),
+          rgba(255, 255, 255, 0.02);
+        padding: 12px;
+        transition:
+          transform 170ms ease,
+          box-shadow 170ms ease,
+          border-color 170ms ease,
+          background-color 170ms ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .card:hover {
+        transform: translateY(-2px) scale(1.01);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: var(--shadow);
+      }
+
+      .card:focus-visible {
+        outline: 2px solid rgba(96, 165, 250, 0.55);
+        outline-offset: 2px;
+      }
+
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 10px;
+      }
+
+      .slug {
+        margin: 0;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0.02em;
+      }
+
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted-2);
+        font-size: 12px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: end;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        padding: 4px 8px;
+        font-size: 11px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .tag.hls {
+        border-color: rgba(244, 63, 94, 0.35);
+        background: rgba(244, 63, 94, 0.1);
+        color: #fecdd3;
+      }
+
+      .tag.dash {
+        border-color: rgba(96, 165, 250, 0.35);
+        background: rgba(96, 165, 250, 0.1);
+        color: #dbeafe;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .metric {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 8px 9px;
+        min-width: 0;
+      }
+
+      .metric .k {
+        display: block;
+        color: var(--muted-2);
+        font-size: 11px;
+      }
+
+      .metric .v {
+        display: block;
+        margin-top: 4px;
+        font-weight: 600;
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .hint-arrow {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+      }
+
+      .muted-code {
+        color: var(--muted-2);
+        font-size: 12px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      @media (max-width: 860px) {
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .filters {
+          justify-content: start;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .hero-top {
+          flex-direction: column;
+        }
+
+        .top-actions {
+          width: 100%;
+          justify-content: start;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card,
+        .card:hover,
+        .btn,
+        .pill {
+          transition: none;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section class="panel hero">
+        <div class="hero-top">
+          <div class="title-block">
+            <h1>Media Library</h1>
+            <p>
+              Compact overview for hosted videos. Click a card to open the detail page
+              with URLs, protocol links, manifest analysis, and copy actions.
+            </p>
+          </div>
+          <div class="top-actions">
+            <button class="btn" id="reloadBtn" type="button">Reload</button>
+            <button class="btn" id="copyOriginBtn" type="button">Copy origin</button>
+          </div>
+        </div>
+        <div class="chips" id="statsChips">
+          <span class="chip">Loading catalog...</span>
+        </div>
+      </section>
+
+      <section class="panel toolbar">
+        <label class="search" aria-label="Search videos">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="slug / codec / hls / dash" />
+        </label>
+        <div class="filters" role="group" aria-label="Protocol filter">
+          <button class="pill" data-filter="all" aria-pressed="true" type="button">All</button>
+          <button class="pill" data-filter="hls" aria-pressed="false" type="button">HLS</button>
+          <button class="pill" data-filter="dash" aria-pressed="false" type="button">DASH</button>
+        </div>
+      </section>
+
+      <section class="list" id="cardList"></section>
+    </div>
+
+    <script>
+      (function () {
+        const listEl = document.getElementById("cardList");
+        const statsEl = document.getElementById("statsChips");
+        const searchInput = document.getElementById("searchInput");
+        const reloadBtn = document.getElementById("reloadBtn");
+        const copyOriginBtn = document.getElementById("copyOriginBtn");
+        const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+
+        let catalog = null;
+        let activeFilter = "all";
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        async function copyText(text) {
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            window.prompt("Copy this value:", text);
+          }
+        }
+
+        function renderStats(data, filteredCount) {
+          const total = Array.isArray(data?.items) ? data.items.length : 0;
+          const generated = data?.generatedAt ? new Date(data.generatedAt) : null;
+          const generatedText = generated && !Number.isNaN(generated.getTime())
+            ? generated.toLocaleString()
+            : "unknown";
+          statsEl.innerHTML = [
+            `Videos: ${total}`,
+            `Visible: ${filteredCount}`,
+            `Origin: ${location.origin}`,
+            `Generated: ${generatedText}`,
+          ]
+            .map((text) => `<span class="chip">${escapeHtml(text)}</span>`)
+            .join("");
+        }
+
+        function protocolMatches(item) {
+          if (activeFilter === "all") return true;
+          if (activeFilter === "hls") return Boolean(item.protocols && item.protocols.hls);
+          if (activeFilter === "dash") return Boolean(item.protocols && item.protocols.dash);
+          return true;
+        }
+
+        function searchMatches(item, keyword) {
+          if (!keyword) return true;
+          const hls = item.analysis && item.analysis.hls;
+          const dash = item.analysis && item.analysis.dash;
+          const haystack = [
+            item.slug,
+            item.summary && item.summary.codecText,
+            item.protocols && item.protocols.hls ? "hls" : "",
+            item.protocols && item.protocols.dash ? "dash" : "",
+            hls && hls.manifestName,
+            dash && dash.manifestName,
+            hls && Array.isArray(hls.codecs) ? hls.codecs.join(" ") : "",
+            dash && Array.isArray(dash.codecs) ? dash.codecs.join(" ") : "",
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(keyword);
+        }
+
+        function detailHref(slug) {
+          return `./detail.html?v=${encodeURIComponent(slug)}`;
+        }
+
+        function renderCard(item) {
+          const protocols = item.protocols || {};
+          const summary = item.summary || {};
+          const files = item.files || {};
+          const hlsSegments = summary.hlsSegmentCount;
+          const dashReps = summary.dashRepresentationCount;
+          const segmentInfo = hlsSegments ?? dashReps ?? "-";
+          const protocolCount = [protocols.hls, protocols.dash].filter(Boolean).length;
+
+          return `
+            <a class="card" href="${escapeHtml(detailHref(item.slug))}" aria-label="Open details for ${escapeHtml(item.slug)}">
+              <div class="card-top">
+                <div>
+                  <h2 class="slug">${escapeHtml(item.slug)}</h2>
+                  <p class="sub">default ${escapeHtml((item.urls && item.urls.default) || "-")}</p>
+                </div>
+                <div class="tags">
+                  ${protocols.hls ? '<span class="tag hls">HLS</span>' : ""}
+                  ${protocols.dash ? '<span class="tag dash">DASH</span>' : ""}
+                  <span class="tag">${escapeHtml(String(protocolCount))} protocol${protocolCount === 1 ? "" : "s"}</span>
+                </div>
+              </div>
+
+              <div class="metrics">
+                <div class="metric"><span class="k">Duration</span><span class="v">${escapeHtml(summary.durationText || "-")}</span></div>
+                <div class="metric"><span class="k">Codec</span><span class="v">${escapeHtml(summary.codecText || "unknown")}</span></div>
+                <div class="metric"><span class="k">Files / Size</span><span class="v">${escapeHtml(String(files.totalCount || 0))} / ${escapeHtml(files.totalSize || "-")}</span></div>
+                <div class="metric"><span class="k">Segments</span><span class="v">${escapeHtml(String(segmentInfo))}</span></div>
+              </div>
+
+              <div class="card-foot">
+                <span class="muted-code">${escapeHtml(protocols.defaultProtocol || "-")} detail page</span>
+                <span class="hint-arrow">Open →</span>
+              </div>
+            </a>
+          `;
+        }
+
+        function render() {
+          if (!catalog || !Array.isArray(catalog.items)) {
+            listEl.innerHTML = '<div class="empty">Catalog not loaded.</div>';
+            renderStats({ items: [] }, 0);
+            return;
+          }
+
+          const keyword = searchInput.value.trim().toLowerCase();
+          const filtered = catalog.items.filter((item) => protocolMatches(item) && searchMatches(item, keyword));
+          renderStats(catalog, filtered.length);
+
+          if (filtered.length === 0) {
+            listEl.innerHTML = '<div class="empty">No matching videos. Try slug, codec, hls, or dash.</div>';
+            return;
+          }
+
+          listEl.innerHTML = filtered.map(renderCard).join("");
+        }
+
+        async function loadCatalog() {
+          listEl.innerHTML = '<div class="empty">Loading catalog...</div>';
+          try {
+            const response = await fetch(`./catalog.json?ts=${Date.now()}`, { cache: "no-store" });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            catalog = await response.json();
+            render();
+          } catch (error) {
+            listEl.innerHTML = `<div class="empty">Failed to load <code>catalog.json</code>: ${escapeHtml(String(error))}. Run <code>npm run build</code> and redeploy.</div>`;
+            renderStats({ items: [] }, 0);
+          }
+        }
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            activeFilter = this.getAttribute("data-filter") || "all";
+            filterButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === this)));
+            render();
+          });
+        });
+
+        searchInput.addEventListener("input", render);
+        reloadBtn.addEventListener("click", loadCatalog);
+        copyOriginBtn.addEventListener("click", function () {
+          copyText(location.origin);
+        });
+
+        loadCatalog();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,676 @@
+{
+  "generatedAt": "2026-02-28T17:49:45.874Z",
+  "basePath": "/_v",
+  "videoCount": 5,
+  "items": [
+    {
+      "slug": "001",
+      "urls": {
+        "default": "/001",
+        "hls": "/h/001",
+        "dash": null,
+        "hlsManifest": "/001.m3u8",
+        "dashManifest": null,
+        "player": "/player.html?v=001",
+        "playerHls": "/player.html?v=001&type=hls",
+        "playerDash": null
+      },
+      "protocols": {
+        "hls": true,
+        "dash": false,
+        "defaultProtocol": "hls"
+      },
+      "files": {
+        "totalCount": 16,
+        "totalBytes": 10333918,
+        "totalSize": "9.86 MB",
+        "byExtension": {
+          "m3u8": 1,
+          "ts": 15
+        },
+        "sample": [
+          {
+            "name": "test.m3u8",
+            "ext": "m3u8",
+            "sizeBytes": 498,
+            "url": "/_v/001/test.m3u8"
+          },
+          {
+            "name": "test0.ts",
+            "ext": "ts",
+            "sizeBytes": 1308856,
+            "url": "/_v/001/test0.ts"
+          },
+          {
+            "name": "test1.ts",
+            "ext": "ts",
+            "sizeBytes": 542004,
+            "url": "/_v/001/test1.ts"
+          },
+          {
+            "name": "test10.ts",
+            "ext": "ts",
+            "sizeBytes": 492184,
+            "url": "/_v/001/test10.ts"
+          },
+          {
+            "name": "test11.ts",
+            "ext": "ts",
+            "sizeBytes": 949212,
+            "url": "/_v/001/test11.ts"
+          },
+          {
+            "name": "test12.ts",
+            "ext": "ts",
+            "sizeBytes": 405328,
+            "url": "/_v/001/test12.ts"
+          },
+          {
+            "name": "test13.ts",
+            "ext": "ts",
+            "sizeBytes": 1338372,
+            "url": "/_v/001/test13.ts"
+          },
+          {
+            "name": "test14.ts",
+            "ext": "ts",
+            "sizeBytes": 382392,
+            "url": "/_v/001/test14.ts"
+          },
+          {
+            "name": "test2.ts",
+            "ext": "ts",
+            "sizeBytes": 1065960,
+            "url": "/_v/001/test2.ts"
+          },
+          {
+            "name": "test3.ts",
+            "ext": "ts",
+            "sizeBytes": 362088,
+            "url": "/_v/001/test3.ts"
+          }
+        ]
+      },
+      "summary": {
+        "durationSeconds": 88.8,
+        "durationText": "1:29",
+        "codecs": [],
+        "codecText": "unknown",
+        "hlsSegmentCount": 15,
+        "dashRepresentationCount": null
+      },
+      "analysis": {
+        "hls": {
+          "manifestName": "test.m3u8",
+          "manifestUrl": "/_v/001/test.m3u8",
+          "type": "hls",
+          "playlistKind": "media",
+          "targetDuration": 8,
+          "totalDurationSeconds": 88.8,
+          "segmentCount": 15,
+          "playlistType": null,
+          "version": 3,
+          "codecs": [],
+          "resolutions": [],
+          "bandwidths": [],
+          "segmentExtensions": [
+            "ts"
+          ],
+          "notes": [
+            "codec not declared in playlist (TS media playlist)"
+          ]
+        },
+        "dash": null
+      },
+      "manifests": {
+        "default": "/_v/001/test.m3u8",
+        "hls": "/_v/001/test.m3u8",
+        "dash": null
+      }
+    },
+    {
+      "slug": "e-m",
+      "urls": {
+        "default": "/e-m",
+        "hls": null,
+        "dash": "/d/e-m",
+        "hlsManifest": null,
+        "dashManifest": "/e-m.mpd",
+        "player": "/player.html?v=e-m",
+        "playerHls": null,
+        "playerDash": "/player.html?v=e-m&type=dash"
+      },
+      "protocols": {
+        "hls": false,
+        "dash": true,
+        "defaultProtocol": "dash"
+      },
+      "files": {
+        "totalCount": 42,
+        "totalBytes": 36578098,
+        "totalSize": "34.9 MB",
+        "byExtension": {
+          "m4s": 41,
+          "mpd": 1
+        },
+        "sample": [
+          {
+            "name": "chunk-stream0-00001.m4s",
+            "ext": "m4s",
+            "sizeBytes": 867550,
+            "url": "/_v/e-m/chunk-stream0-00001.m4s"
+          },
+          {
+            "name": "chunk-stream0-00002.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1151745,
+            "url": "/_v/e-m/chunk-stream0-00002.m4s"
+          },
+          {
+            "name": "chunk-stream0-00003.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1814112,
+            "url": "/_v/e-m/chunk-stream0-00003.m4s"
+          },
+          {
+            "name": "chunk-stream0-00004.m4s",
+            "ext": "m4s",
+            "sizeBytes": 2561254,
+            "url": "/_v/e-m/chunk-stream0-00004.m4s"
+          },
+          {
+            "name": "chunk-stream0-00005.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1219356,
+            "url": "/_v/e-m/chunk-stream0-00005.m4s"
+          },
+          {
+            "name": "chunk-stream0-00006.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1730951,
+            "url": "/_v/e-m/chunk-stream0-00006.m4s"
+          },
+          {
+            "name": "chunk-stream0-00007.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1137577,
+            "url": "/_v/e-m/chunk-stream0-00007.m4s"
+          },
+          {
+            "name": "chunk-stream0-00008.m4s",
+            "ext": "m4s",
+            "sizeBytes": 5110347,
+            "url": "/_v/e-m/chunk-stream0-00008.m4s"
+          },
+          {
+            "name": "chunk-stream0-00009.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1304026,
+            "url": "/_v/e-m/chunk-stream0-00009.m4s"
+          },
+          {
+            "name": "chunk-stream0-00010.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1453740,
+            "url": "/_v/e-m/chunk-stream0-00010.m4s"
+          }
+        ]
+      },
+      "summary": {
+        "durationSeconds": 90,
+        "durationText": "1:30",
+        "codecs": [
+          "av01.0.08M.08",
+          "mp4a.40.2"
+        ],
+        "codecText": "av01.0.08M.08, mp4a.40.2",
+        "hlsSegmentCount": null,
+        "dashRepresentationCount": 2
+      },
+      "analysis": {
+        "hls": null,
+        "dash": {
+          "manifestName": "manifest.mpd",
+          "manifestUrl": "/_v/e-m/manifest.mpd",
+          "type": "dash",
+          "totalDurationSeconds": 90,
+          "codecs": [
+            "av01.0.08M.08",
+            "mp4a.40.2"
+          ],
+          "mimeTypes": [
+            "video/mp4",
+            "audio/mp4"
+          ],
+          "representationCount": 2,
+          "representations": [
+            {
+              "id": "0",
+              "bandwidth": 3117718,
+              "resolution": "1920x1080"
+            },
+            {
+              "id": "1",
+              "bandwidth": 128000,
+              "resolution": null
+            }
+          ],
+          "segmentCountApprox": null
+        }
+      },
+      "manifests": {
+        "default": "/_v/e-m/manifest.mpd",
+        "hls": null,
+        "dash": "/_v/e-m/manifest.mpd"
+      }
+    },
+    {
+      "slug": "e-w",
+      "urls": {
+        "default": "/e-w",
+        "hls": null,
+        "dash": "/d/e-w",
+        "hlsManifest": null,
+        "dashManifest": "/e-w.mpd",
+        "player": "/player.html?v=e-w",
+        "playerHls": null,
+        "playerDash": "/player.html?v=e-w&type=dash"
+      },
+      "protocols": {
+        "hls": false,
+        "dash": true,
+        "defaultProtocol": "dash"
+      },
+      "files": {
+        "totalCount": 42,
+        "totalBytes": 36950234,
+        "totalSize": "35.2 MB",
+        "byExtension": {
+          "webm": 41,
+          "mpd": 1
+        },
+        "sample": [
+          {
+            "name": "chunk-stream0-00001.webm",
+            "ext": "webm",
+            "sizeBytes": 867550,
+            "url": "/_v/e-w/chunk-stream0-00001.webm"
+          },
+          {
+            "name": "chunk-stream0-00002.webm",
+            "ext": "webm",
+            "sizeBytes": 1151745,
+            "url": "/_v/e-w/chunk-stream0-00002.webm"
+          },
+          {
+            "name": "chunk-stream0-00003.webm",
+            "ext": "webm",
+            "sizeBytes": 1814112,
+            "url": "/_v/e-w/chunk-stream0-00003.webm"
+          },
+          {
+            "name": "chunk-stream0-00004.webm",
+            "ext": "webm",
+            "sizeBytes": 2561254,
+            "url": "/_v/e-w/chunk-stream0-00004.webm"
+          },
+          {
+            "name": "chunk-stream0-00005.webm",
+            "ext": "webm",
+            "sizeBytes": 1219356,
+            "url": "/_v/e-w/chunk-stream0-00005.webm"
+          },
+          {
+            "name": "chunk-stream0-00006.webm",
+            "ext": "webm",
+            "sizeBytes": 1730951,
+            "url": "/_v/e-w/chunk-stream0-00006.webm"
+          },
+          {
+            "name": "chunk-stream0-00007.webm",
+            "ext": "webm",
+            "sizeBytes": 1137577,
+            "url": "/_v/e-w/chunk-stream0-00007.webm"
+          },
+          {
+            "name": "chunk-stream0-00008.webm",
+            "ext": "webm",
+            "sizeBytes": 5110347,
+            "url": "/_v/e-w/chunk-stream0-00008.webm"
+          },
+          {
+            "name": "chunk-stream0-00009.webm",
+            "ext": "webm",
+            "sizeBytes": 1304026,
+            "url": "/_v/e-w/chunk-stream0-00009.webm"
+          },
+          {
+            "name": "chunk-stream0-00010.webm",
+            "ext": "webm",
+            "sizeBytes": 1453740,
+            "url": "/_v/e-w/chunk-stream0-00010.webm"
+          }
+        ]
+      },
+      "summary": {
+        "durationSeconds": 90,
+        "durationText": "1:30",
+        "codecs": [
+          "av01.0.08M.08",
+          "opus"
+        ],
+        "codecText": "av01.0.08M.08, opus",
+        "hlsSegmentCount": null,
+        "dashRepresentationCount": 2
+      },
+      "analysis": {
+        "hls": null,
+        "dash": {
+          "manifestName": "manifest.mpd",
+          "manifestUrl": "/_v/e-w/manifest.mpd",
+          "type": "dash",
+          "totalDurationSeconds": 90,
+          "codecs": [
+            "av01.0.08M.08",
+            "opus"
+          ],
+          "mimeTypes": [
+            "video/mp4",
+            "audio/webm"
+          ],
+          "representationCount": 2,
+          "representations": [
+            {
+              "id": "0",
+              "bandwidth": 3117718,
+              "resolution": "1920x1080"
+            },
+            {
+              "id": "1",
+              "bandwidth": 164498,
+              "resolution": null
+            }
+          ],
+          "segmentCountApprox": null
+        }
+      },
+      "manifests": {
+        "default": "/_v/e-w/manifest.mpd",
+        "hls": null,
+        "dash": "/_v/e-w/manifest.mpd"
+      }
+    },
+    {
+      "slug": "linlin-tx",
+      "urls": {
+        "default": "/linlin-tx",
+        "hls": null,
+        "dash": "/d/linlin-tx",
+        "hlsManifest": null,
+        "dashManifest": "/linlin-tx.mpd",
+        "player": "/player.html?v=linlin-tx",
+        "playerHls": null,
+        "playerDash": "/player.html?v=linlin-tx&type=dash"
+      },
+      "protocols": {
+        "hls": false,
+        "dash": true,
+        "defaultProtocol": "dash"
+      },
+      "files": {
+        "totalCount": 1060,
+        "totalBytes": 559139756,
+        "totalSize": "533 MB",
+        "byExtension": {
+          "m4s": 1059,
+          "mpd": 1
+        },
+        "sample": [
+          {
+            "name": "chunk-stream0-00001.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1156019,
+            "url": "/_v/linlin-tx/chunk-stream0-00001.m4s"
+          },
+          {
+            "name": "chunk-stream0-00002.m4s",
+            "ext": "m4s",
+            "sizeBytes": 962874,
+            "url": "/_v/linlin-tx/chunk-stream0-00002.m4s"
+          },
+          {
+            "name": "chunk-stream0-00003.m4s",
+            "ext": "m4s",
+            "sizeBytes": 2714082,
+            "url": "/_v/linlin-tx/chunk-stream0-00003.m4s"
+          },
+          {
+            "name": "chunk-stream0-00004.m4s",
+            "ext": "m4s",
+            "sizeBytes": 2688381,
+            "url": "/_v/linlin-tx/chunk-stream0-00004.m4s"
+          },
+          {
+            "name": "chunk-stream0-00005.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1491001,
+            "url": "/_v/linlin-tx/chunk-stream0-00005.m4s"
+          },
+          {
+            "name": "chunk-stream0-00006.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1183254,
+            "url": "/_v/linlin-tx/chunk-stream0-00006.m4s"
+          },
+          {
+            "name": "chunk-stream0-00007.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1089400,
+            "url": "/_v/linlin-tx/chunk-stream0-00007.m4s"
+          },
+          {
+            "name": "chunk-stream0-00008.m4s",
+            "ext": "m4s",
+            "sizeBytes": 998815,
+            "url": "/_v/linlin-tx/chunk-stream0-00008.m4s"
+          },
+          {
+            "name": "chunk-stream0-00009.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1418283,
+            "url": "/_v/linlin-tx/chunk-stream0-00009.m4s"
+          },
+          {
+            "name": "chunk-stream0-00010.m4s",
+            "ext": "m4s",
+            "sizeBytes": 2040148,
+            "url": "/_v/linlin-tx/chunk-stream0-00010.m4s"
+          }
+        ]
+      },
+      "summary": {
+        "durationSeconds": 2653.5,
+        "durationText": "44:14",
+        "codecs": [
+          "av01.0.08M.08.0.111.01.01.01.0",
+          "mp4a.40.2"
+        ],
+        "codecText": "av01.0.08M.08.0.111.01.01.01.0, mp4a.40.2",
+        "hlsSegmentCount": null,
+        "dashRepresentationCount": 2
+      },
+      "analysis": {
+        "hls": null,
+        "dash": {
+          "manifestName": "index.mpd",
+          "manifestUrl": "/_v/linlin-tx/index.mpd",
+          "type": "dash",
+          "totalDurationSeconds": 2653.5,
+          "codecs": [
+            "av01.0.08M.08.0.111.01.01.01.0",
+            "mp4a.40.2"
+          ],
+          "mimeTypes": [
+            "video/mp4",
+            "audio/mp4"
+          ],
+          "representationCount": 2,
+          "representations": [
+            {
+              "id": "0",
+              "bandwidth": 1618401,
+              "resolution": "1920x1080"
+            },
+            {
+              "id": "1",
+              "bandwidth": 67288,
+              "resolution": null
+            }
+          ],
+          "segmentCountApprox": null
+        }
+      },
+      "manifests": {
+        "default": "/_v/linlin-tx/index.mpd",
+        "hls": null,
+        "dash": "/_v/linlin-tx/index.mpd"
+      }
+    },
+    {
+      "slug": "m-m",
+      "urls": {
+        "default": "/m-m",
+        "hls": null,
+        "dash": "/d/m-m",
+        "hlsManifest": null,
+        "dashManifest": "/m-m.mpd",
+        "player": "/player.html?v=m-m",
+        "playerHls": null,
+        "playerDash": "/player.html?v=m-m&type=dash"
+      },
+      "protocols": {
+        "hls": false,
+        "dash": true,
+        "defaultProtocol": "dash"
+      },
+      "files": {
+        "totalCount": 514,
+        "totalBytes": 358620212,
+        "totalSize": "342 MB",
+        "byExtension": {
+          "m4s": 513,
+          "mpd": 1
+        },
+        "sample": [
+          {
+            "name": "chunk-stream0-00001.m4s",
+            "ext": "m4s",
+            "sizeBytes": 4162157,
+            "url": "/_v/m-m/chunk-stream0-00001.m4s"
+          },
+          {
+            "name": "chunk-stream0-00002.m4s",
+            "ext": "m4s",
+            "sizeBytes": 5589037,
+            "url": "/_v/m-m/chunk-stream0-00002.m4s"
+          },
+          {
+            "name": "chunk-stream0-00003.m4s",
+            "ext": "m4s",
+            "sizeBytes": 5837673,
+            "url": "/_v/m-m/chunk-stream0-00003.m4s"
+          },
+          {
+            "name": "chunk-stream0-00004.m4s",
+            "ext": "m4s",
+            "sizeBytes": 3165031,
+            "url": "/_v/m-m/chunk-stream0-00004.m4s"
+          },
+          {
+            "name": "chunk-stream0-00005.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1035210,
+            "url": "/_v/m-m/chunk-stream0-00005.m4s"
+          },
+          {
+            "name": "chunk-stream0-00006.m4s",
+            "ext": "m4s",
+            "sizeBytes": 2602342,
+            "url": "/_v/m-m/chunk-stream0-00006.m4s"
+          },
+          {
+            "name": "chunk-stream0-00007.m4s",
+            "ext": "m4s",
+            "sizeBytes": 5502794,
+            "url": "/_v/m-m/chunk-stream0-00007.m4s"
+          },
+          {
+            "name": "chunk-stream0-00008.m4s",
+            "ext": "m4s",
+            "sizeBytes": 4775091,
+            "url": "/_v/m-m/chunk-stream0-00008.m4s"
+          },
+          {
+            "name": "chunk-stream0-00009.m4s",
+            "ext": "m4s",
+            "sizeBytes": 3417153,
+            "url": "/_v/m-m/chunk-stream0-00009.m4s"
+          },
+          {
+            "name": "chunk-stream0-00010.m4s",
+            "ext": "m4s",
+            "sizeBytes": 1855366,
+            "url": "/_v/m-m/chunk-stream0-00010.m4s"
+          }
+        ]
+      },
+      "summary": {
+        "durationSeconds": 1170.9,
+        "durationText": "19:31",
+        "codecs": [
+          "av01.0.08M.08.0.111.01.01.01.0",
+          "mp4a.40.2"
+        ],
+        "codecText": "av01.0.08M.08.0.111.01.01.01.0, mp4a.40.2",
+        "hlsSegmentCount": null,
+        "dashRepresentationCount": 2
+      },
+      "analysis": {
+        "hls": null,
+        "dash": {
+          "manifestName": "index.mpd",
+          "manifestUrl": "/_v/m-m/index.mpd",
+          "type": "dash",
+          "totalDurationSeconds": 1170.9,
+          "codecs": [
+            "av01.0.08M.08.0.111.01.01.01.0",
+            "mp4a.40.2"
+          ],
+          "mimeTypes": [
+            "video/mp4",
+            "audio/mp4"
+          ],
+          "representationCount": 2,
+          "representations": [
+            {
+              "id": "0",
+              "bandwidth": 2317372,
+              "resolution": "1920x1080"
+            },
+            {
+              "id": "1",
+              "bandwidth": 132808,
+              "resolution": null
+            }
+          ],
+          "segmentCountApprox": null
+        }
+      },
+      "manifests": {
+        "default": "/_v/m-m/index.mpd",
+        "hls": null,
+        "dash": "/_v/m-m/index.mpd"
+      }
+    }
+  ]
+}

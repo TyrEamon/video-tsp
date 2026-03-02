@@ -1,0 +1,15 @@
+/001 /_v/001/test.m3u8 302
+/001.m3u8 /_v/001/test.m3u8 302
+/d/e-m /_v/e-m/manifest.mpd 302
+/d/e-w /_v/e-w/manifest.mpd 302
+/d/linlin-tx /_v/linlin-tx/index.mpd 302
+/d/m-m /_v/m-m/index.mpd 302
+/e-m /_v/e-m/manifest.mpd 302
+/e-m.mpd /_v/e-m/manifest.mpd 302
+/e-w /_v/e-w/manifest.mpd 302
+/e-w.mpd /_v/e-w/manifest.mpd 302
+/h/001 /_v/001/test.m3u8 302
+/linlin-tx /_v/linlin-tx/index.mpd 302
+/linlin-tx.mpd /_v/linlin-tx/index.mpd 302
+/m-m /_v/m-m/index.mpd 302
+/m-m.mpd /_v/m-m/index.mpd 302

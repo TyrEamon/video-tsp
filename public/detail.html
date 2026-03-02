@@ -1,0 +1,764 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Detail</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050507;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel-2: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.12);
+        --border-strong: rgba(255, 255, 255, 0.2);
+        --text: #f5f7fb;
+        --muted: rgba(245, 247, 251, 0.68);
+        --muted-2: rgba(245, 247, 251, 0.52);
+        --accent-hls: #f43f5e;
+        --accent-dash: #60a5fa;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+        background:
+          radial-gradient(circle at 100% 0%, rgba(244, 63, 94, 0.12), transparent 34%),
+          radial-gradient(circle at 0% 100%, rgba(96, 165, 250, 0.11), transparent 42%),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+        color: inherit;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .app {
+        width: min(1240px, 100%);
+        margin: 0 auto;
+        padding: 18px 14px 30px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: 18px;
+        padding: 14px;
+        backdrop-filter: blur(12px);
+      }
+
+      .header {
+        display: grid;
+        gap: 12px;
+      }
+
+      .header-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 8px 10px;
+      }
+
+      .back-link:hover {
+        color: #fff;
+        border-color: var(--border-strong);
+      }
+
+      .title h1 {
+        margin: 0;
+        font-size: clamp(1.3rem, 2.4vw, 2rem);
+        letter-spacing: -0.02em;
+      }
+
+      .title p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: end;
+      }
+
+      .tag {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        padding: 5px 9px;
+        font-size: 12px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .tag.hls {
+        color: #fecdd3;
+        border-color: rgba(244, 63, 94, 0.34);
+        background: rgba(244, 63, 94, 0.1);
+      }
+
+      .tag.dash {
+        color: #dbeafe;
+        border-color: rgba(96, 165, 250, 0.34);
+        background: rgba(96, 165, 250, 0.1);
+      }
+
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--panel-2);
+        padding: 6px 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 14px;
+      }
+
+      .stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 9px 12px;
+        cursor: pointer;
+        transition: background-color 140ms ease, border-color 140ms ease;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--border-strong);
+      }
+
+      .btn.primary {
+        border-color: rgba(255, 255, 255, 0.18);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+          rgba(255, 255, 255, 0.03);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .metric {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .metric .k {
+        display: block;
+        font-size: 12px;
+        color: var(--muted-2);
+      }
+
+      .metric .v {
+        display: block;
+        margin-top: 6px;
+        font-weight: 700;
+        font-size: 14px;
+        word-break: break-word;
+      }
+
+      .section-title {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .url-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .url-row {
+        display: grid;
+        grid-template-columns: 74px 1fr auto auto;
+        gap: 8px;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 8px;
+      }
+
+      .url-label {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .url-value {
+        color: #d1d5db;
+        font-size: 12px;
+        word-break: break-all;
+      }
+
+      .btn-mini {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .btn-mini:hover {
+        border-color: var(--border-strong);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .kv-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .kv {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .kv .k {
+        display: block;
+        color: var(--muted-2);
+        font-size: 12px;
+      }
+
+      .kv .v {
+        display: block;
+        margin-top: 6px;
+        font-size: 13px;
+        color: #e5e7eb;
+        word-break: break-word;
+      }
+
+      .manifest-card {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 14px;
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .manifest-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .manifest-head strong {
+        font-size: 14px;
+      }
+
+      .manifest-head .pill {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        padding: 4px 8px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .code-block {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 10px;
+        color: #d1d5db;
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.45;
+        margin: 0;
+      }
+
+      details {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+      }
+
+      details > summary {
+        cursor: pointer;
+        color: var(--muted);
+        user-select: none;
+      }
+
+      .sample-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .sample-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .sample-row .name {
+        font-size: 12px;
+        color: #d1d5db;
+        word-break: break-all;
+      }
+
+      .sample-row .meta {
+        font-size: 11px;
+        color: var(--muted-2);
+      }
+
+      .empty,
+      .error {
+        border: 1px dashed var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 16px;
+        padding: 18px;
+        color: var(--muted);
+      }
+
+      .toast {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(96, 165, 250, 0.35);
+        background: rgba(15, 23, 42, 0.95);
+        color: #dbeafe;
+        padding: 10px 12px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 120ms ease, transform 120ms ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .url-row {
+          grid-template-columns: 1fr;
+        }
+
+        .kv-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .header-top {
+          flex-direction: column;
+        }
+
+        .tags {
+          justify-content: start;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn,
+        .btn-mini,
+        .toast {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app" id="app">
+      <section class="panel header" id="headerPanel">
+        <div class="header-top">
+          <a class="back-link" href="./">← Back to library</a>
+          <div class="tags" id="topTags"></div>
+        </div>
+        <div class="title" id="titleBox">
+          <h1>Loading...</h1>
+          <p>Reading catalog.json</p>
+        </div>
+        <div class="chips" id="topChips"></div>
+      </section>
+
+      <div class="layout" id="contentLayout" hidden>
+        <div class="stack" id="leftCol"></div>
+        <div class="stack" id="rightCol"></div>
+      </div>
+
+      <section class="error" id="errorBox" hidden></section>
+    </div>
+
+    <div class="toast" id="toast">Copied</div>
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        const slug = params.get("v") || params.get("slug") || "";
+
+        const headerPanel = document.getElementById("headerPanel");
+        const titleBox = document.getElementById("titleBox");
+        const topTags = document.getElementById("topTags");
+        const topChips = document.getElementById("topChips");
+        const contentLayout = document.getElementById("contentLayout");
+        const leftCol = document.getElementById("leftCol");
+        const rightCol = document.getElementById("rightCol");
+        const errorBox = document.getElementById("errorBox");
+        const toast = document.getElementById("toast");
+
+        let toastTimer = null;
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function showToast(text) {
+          toast.textContent = text;
+          toast.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => toast.classList.remove("show"), 1400);
+        }
+
+        async function copyText(text) {
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast("Copied");
+          } catch {
+            window.prompt("Copy this value:", text);
+          }
+        }
+
+        function abs(path) {
+          if (!path) return "";
+          return new URL(path, location.origin).toString();
+        }
+
+        function renderError(message) {
+          contentLayout.hidden = true;
+          errorBox.hidden = false;
+          errorBox.innerHTML = message;
+        }
+
+        function line(text) {
+          return text == null || text === "" ? "-" : String(text);
+        }
+
+        function listText(list) {
+          return Array.isArray(list) && list.length ? list.join(", ") : "-";
+        }
+
+        function renderTop(item, meta) {
+          const protocols = item.protocols || {};
+          const summary = item.summary || {};
+          titleBox.innerHTML = `
+            <h1>${escapeHtml(item.slug)}</h1>
+            <p>Detail page for hosted media entry · default route <code>${escapeHtml((item.urls && item.urls.default) || "-")}</code></p>
+          `;
+
+          topTags.innerHTML = `
+            ${protocols.hls ? '<span class="tag hls">HLS</span>' : ""}
+            ${protocols.dash ? '<span class="tag dash">DASH</span>' : ""}
+            <span class="tag">default: ${escapeHtml(protocols.defaultProtocol || "-")}</span>
+          `;
+
+          topChips.innerHTML = [
+            `Duration: ${summary.durationText || "-"}`,
+            `Codec: ${summary.codecText || "unknown"}`,
+            `Files: ${(item.files && item.files.totalCount) || 0}`,
+            `Size: ${(item.files && item.files.totalSize) || "-"}`,
+            `Catalog generated: ${meta.generatedAt ? new Date(meta.generatedAt).toLocaleString() : "unknown"}`,
+          ]
+            .map((t) => `<span class="chip">${escapeHtml(t)}</span>`)
+            .join("");
+        }
+
+        function urlRows(item) {
+          const urls = item.urls || {};
+          const rows = [];
+          const entries = [
+            ["default", urls.default],
+            ["hls", urls.hls],
+            ["dash", urls.dash],
+            ["player", urls.player],
+            ["player hls", urls.playerHls],
+            ["player dash", urls.playerDash],
+            ["m3u8", urls.hlsManifest],
+            ["mpd", urls.dashManifest],
+          ];
+
+          for (const [label, path] of entries) {
+            if (!path) continue;
+            const absolute = abs(path);
+            rows.push(`
+              <div class="url-row">
+                <div class="url-label">${escapeHtml(label)}</div>
+                <div class="url-value"><code>${escapeHtml(absolute)}</code></div>
+                <button class="btn-mini" type="button" data-copy="${escapeHtml(absolute)}">Copy</button>
+                <a class="btn-mini" href="${escapeHtml(path)}" target="_blank" rel="noreferrer">Open</a>
+              </div>
+            `);
+          }
+          return rows.join("");
+        }
+
+        function manifestSummaryCard(kind, analysis) {
+          const accentClass = kind === "HLS" ? "hls" : "dash";
+          const manifestName = analysis?.manifestName || "-";
+          const items = kind === "HLS"
+            ? [
+              ["Manifest", manifestName],
+               ["Playlist kind", line(analysis?.playlistKind)],
+               ["Target duration", line(analysis?.targetDuration)],
+               ["Duration (sec)", line(analysis?.totalDurationSeconds)],
+               ["Segments", line(analysis?.segmentCount)],
+               ["Codec(s)", listText(analysis?.codecs)],
+               ["Resolutions", listText(analysis?.resolutions)],
+               ["Bandwidths", listText(analysis?.bandwidths)],
+               ["Segment ext", listText(analysis?.segmentExtensions)],
+             ]
+            : [
+              ["Manifest", manifestName],
+               ["Duration (sec)", line(analysis?.totalDurationSeconds)],
+               ["Codec(s)", listText(analysis?.codecs)],
+               ["Mime type(s)", listText(analysis?.mimeTypes)],
+               ["Representations", line(analysis?.representationCount)],
+               ["Approx segments", line(analysis?.segmentCountApprox)],
+             ];
+
+          const kvHtml = items
+            .map(
+              ([k, v]) => `<div class="kv"><span class="k">${escapeHtml(k)}</span><span class="v">${escapeHtml(v)}</span></div>`,
+            )
+            .join("");
+
+          const parseError = analysis?.parseError
+            ? `<div class="code-block">parseError: ${escapeHtml(String(analysis.parseError))}</div>`
+            : "";
+          const notes = Array.isArray(analysis?.notes) && analysis.notes.length
+            ? `<div class="code-block">notes: ${escapeHtml(analysis.notes.join(" | "))}</div>`
+            : "";
+
+          return `
+            <section class="manifest-card">
+              <div class="manifest-head">
+                <strong>${kind} analysis</strong>
+                <span class="pill ${accentClass}">${escapeHtml(manifestName)}</span>
+              </div>
+              <div class="kv-grid">${kvHtml}</div>
+              ${notes}
+              ${parseError}
+            </section>
+          `;
+        }
+
+        function renderLeft(item) {
+          const summary = item.summary || {};
+          const files = item.files || {};
+          const segmentInfo = summary.hlsSegmentCount ?? summary.dashRepresentationCount ?? "-";
+
+          leftCol.innerHTML = `
+            <section class="panel">
+              <h2 class="section-title">Quick Actions</h2>
+              <div class="actions">
+                ${(item.urls && item.urls.default) ? `<a class="btn primary" href="${escapeHtml(item.urls.default)}" target="_blank" rel="noreferrer">Open default</a>` : ""}
+                ${(item.urls && item.urls.hls) ? `<a class="btn" href="${escapeHtml(item.urls.hls)}" target="_blank" rel="noreferrer">Open HLS</a>` : ""}
+                ${(item.urls && item.urls.dash) ? `<a class="btn" href="${escapeHtml(item.urls.dash)}" target="_blank" rel="noreferrer">Open DASH</a>` : ""}
+                ${(item.urls && item.urls.player) ? `<a class="btn" href="${escapeHtml(item.urls.player)}" target="_blank" rel="noreferrer">Open player</a>` : ""}
+                <button class="btn" type="button" data-copy="${escapeHtml(abs((item.urls && item.urls.default) || ""))}">Copy default URL</button>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2 class="section-title">Summary</h2>
+              <div class="summary-grid">
+                <div class="metric"><span class="k">Duration</span><span class="v">${escapeHtml(summary.durationText || "-")}</span></div>
+                <div class="metric"><span class="k">Codec</span><span class="v">${escapeHtml(summary.codecText || "unknown")}</span></div>
+                <div class="metric"><span class="k">Files / Size</span><span class="v">${escapeHtml(String(files.totalCount || 0))} / ${escapeHtml(files.totalSize || "-")}</span></div>
+                <div class="metric"><span class="k">Segments</span><span class="v">${escapeHtml(String(segmentInfo))}</span></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2 class="section-title">URLs</h2>
+              <div class="url-list">${urlRows(item)}</div>
+            </section>
+
+            <section class="panel">
+              <h2 class="section-title">Files</h2>
+              <div class="kv-grid">
+                <div class="kv"><span class="k">By extension</span><span class="v">${escapeHtml(Object.entries(files.byExtension || {}).map(([ext, count]) => `${ext}:${count}`).join(" | ") || "-")}</span></div>
+                <div class="kv"><span class="k">Total bytes</span><span class="v">${escapeHtml(String(files.totalBytes ?? "-"))}</span></div>
+              </div>
+              <div class="sample-list" style="margin-top:10px;">
+                ${(Array.isArray(files.sample) && files.sample.length ? files.sample : [])
+                  .map((f) => `
+                    <div class="sample-row">
+                      <div>
+                        <div class="name">${escapeHtml(f.name)}</div>
+                        <div class="meta">/${escapeHtml(item.slug)}/${escapeHtml(f.name)}</div>
+                      </div>
+                      <div class="meta">${escapeHtml(String(f.sizeBytes))} B</div>
+                    </div>
+                  `)
+                  .join("")}
+              </div>
+            </section>
+          `;
+        }
+
+        function renderRight(item) {
+          const hls = item.analysis && item.analysis.hls;
+          const dash = item.analysis && item.analysis.dash;
+          const rawJson = JSON.stringify(item, null, 2);
+
+          rightCol.innerHTML = `
+            ${hls ? manifestSummaryCard("HLS", hls) : ""}
+            ${dash ? manifestSummaryCard("DASH", dash) : ""}
+
+            <section class="panel">
+              <h2 class="section-title">Embed Notes</h2>
+              <pre class="code-block">Use explicit protocol routes in your blog:
+HLS  → ${escapeHtml(abs((item.urls && item.urls.hls) || (item.urls && item.urls.default) || ""))}
+DASH → ${escapeHtml(abs((item.urls && item.urls.dash) || ""))}
+Default fallback → ${escapeHtml(abs((item.urls && item.urls.default) || ""))}
+
+If your blog already includes hls.js / dash.js, do not use /player.html.</pre>
+            </section>
+
+            <section class="panel">
+              <details>
+                <summary>Raw catalog item JSON</summary>
+                <pre class="code-block">${escapeHtml(rawJson)}</pre>
+              </details>
+            </section>
+          `;
+        }
+
+        async function load() {
+          if (!slug) {
+            renderError('Missing query param <code>?v=&lt;slug&gt;</code>. Go back to <a href="./">library</a>.');
+            titleBox.innerHTML = "<h1>Missing slug</h1><p>Add ?v=001 to open a detail page.</p>";
+            return;
+          }
+
+          try {
+            const response = await fetch(`./catalog.json?ts=${Date.now()}`, { cache: "no-store" });
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
+            }
+            const data = await response.json();
+            const item = Array.isArray(data.items)
+              ? data.items.find((entry) => String(entry.slug) === String(slug))
+              : null;
+
+            if (!item) {
+              renderError(`Video slug <code>${escapeHtml(slug)}</code> not found in <code>catalog.json</code>. Run <code>npm run build</code> and redeploy, then try again.`);
+              titleBox.innerHTML = `<h1>${escapeHtml(slug)}</h1><p>Not found in current catalog.</p>`;
+              return;
+            }
+
+            renderTop(item, data);
+            renderLeft(item);
+            renderRight(item);
+            contentLayout.hidden = false;
+            errorBox.hidden = true;
+
+            document.title = `${item.slug} · Media Detail`;
+
+            document.querySelectorAll("[data-copy]").forEach((node) => {
+              node.addEventListener("click", function () {
+                copyText(this.getAttribute("data-copy") || "");
+              });
+            });
+          } catch (error) {
+            renderError(`Failed to load <code>catalog.json</code>: ${escapeHtml(String(error))}`);
+            titleBox.innerHTML = `<h1>${escapeHtml(slug || "Media detail")}</h1><p>Catalog load failed.</p>`;
+          }
+        }
+
+        load();
+      })();
+    </script>
+  </body>
+</html>
+

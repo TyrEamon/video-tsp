@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Player</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+        background: #050505;
+        color: #f5f5f5;
+      }
+      .wrap {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 12px;
+        padding: 12px;
+      }
+      .bar {
+        display: grid;
+        gap: 6px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 10px;
+        align-items: center;
+      }
+      .row code {
+        word-break: break-all;
+        color: #fda4af;
+      }
+      .video-shell {
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        background: #000;
+        overflow: hidden;
+      }
+      video {
+        width: 100%;
+        max-width: 1200px;
+        display: block;
+        background: #000;
+      }
+      .hint {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+      }
+      .hint code {
+        color: #93c5fd;
+      }
+      .error {
+        color: #fca5a5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="bar">
+        <div class="row">
+          <strong>Video Player</strong>
+          <span>Source:</span>
+          <code id="srcText">loading...</code>
+        </div>
+        <div class="row">
+          <span>Detected type:</span>
+          <code id="typeText">detecting...</code>
+        </div>
+      </div>
+
+      <div class="video-shell">
+        <video id="video" controls playsinline preload="metadata"></video>
+      </div>
+
+      <div class="hint" id="hint">
+        Usage: <code>?v=001</code> or <code>?src=/h/001</code> or
+        <code>?src=/d/001</code> or
+        <code>?src=https://example.com/path/file.m3u8</code>. Optional:
+        <code>&amp;type=hls</code> / <code>&amp;type=dash</code>.
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dashjs@latest/dist/dash.all.min.js"></script>
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        const v = params.get("v");
+        const srcParam = params.get("src");
+        const typeParam = (params.get("type") || "").toLowerCase();
+
+        let src = srcParam || "";
+
+        const video = document.getElementById("video");
+        const srcText = document.getElementById("srcText");
+        const typeText = document.getElementById("typeText");
+        const hint = document.getElementById("hint");
+
+        let dashPlayer = null;
+        let hlsPlayer = null;
+
+        function setHint(message, isError) {
+          hint.innerHTML = isError
+            ? "<span class='error'>" + message + "</span>"
+            : message;
+        }
+
+        function fail(message) {
+          setHint(message + " Check CORS, URL, and manifest content.", true);
+        }
+
+        function normalizeSource(url) {
+          if (!url) return "";
+          if (url.startsWith("//")) return "https:" + url;
+          return url;
+        }
+
+        function pathnameFrom(url) {
+          try {
+            return new URL(url, location.href).pathname.toLowerCase();
+          } catch {
+            return String(url).toLowerCase();
+          }
+        }
+
+        function shortAliasForSlug(slug, forcedType) {
+          const safeSlug = encodeURIComponent(slug);
+          if (forcedType === "dash") return "/d/" + safeSlug;
+          if (forcedType === "hls") return "/h/" + safeSlug;
+          return "/" + safeSlug;
+        }
+
+        function chooseManifestFromCatalogItem(item, forcedType) {
+          if (!item || !item.manifests) return "";
+          if (forcedType === "dash") {
+            return item.manifests.dash || item.manifests.default || "";
+          }
+          if (forcedType === "hls") {
+            return item.manifests.hls || item.manifests.default || "";
+          }
+          return item.manifests.default || "";
+        }
+
+        async function resolveSourceFromCatalog(slug, forcedType) {
+          try {
+            const response = await fetch("/catalog.json", {
+              cache: "no-store",
+              redirect: "follow",
+            });
+            if (!response.ok) return "";
+            const data = await response.json();
+            const items = Array.isArray(data && data.items) ? data.items : [];
+            const item = items.find((entry) => String(entry.slug) === String(slug));
+            return chooseManifestFromCatalogItem(item, forcedType);
+          } catch {
+            return "";
+          }
+        }
+
+        async function detectManifestType(url) {
+          if (typeParam === "hls" || typeParam === "dash") {
+            return typeParam;
+          }
+
+          const path = pathnameFrom(url);
+          if (path.endsWith(".m3u8")) return "hls";
+          if (path.endsWith(".mpd")) return "dash";
+
+          const response = await fetch(url, { redirect: "follow", cache: "no-store" });
+          if (!response.ok) {
+            throw new Error("Manifest request failed: HTTP " + response.status);
+          }
+
+          const finalPath = pathnameFrom(response.url);
+          if (finalPath.endsWith(".m3u8")) return "hls";
+          if (finalPath.endsWith(".mpd")) return "dash";
+
+          const contentType = (response.headers.get("content-type") || "").toLowerCase();
+          if (contentType.includes("mpegurl") || contentType.includes("vnd.apple")) {
+            return "hls";
+          }
+          if (contentType.includes("dash+xml") || contentType.includes("mpd")) {
+            return "dash";
+          }
+
+          const text = await response.text();
+          const head = text.slice(0, 256);
+          if (head.includes("#EXTM3U")) return "hls";
+          if (/<\s*MPD[\s>]/i.test(head) || text.includes("urn:mpeg:dash:schema:mpd")) {
+            return "dash";
+          }
+
+          throw new Error("Could not detect manifest type (expected HLS .m3u8 or DASH .mpd)");
+        }
+
+        function teardown() {
+          if (hlsPlayer) {
+            hlsPlayer.destroy();
+            hlsPlayer = null;
+          }
+          if (dashPlayer) {
+            dashPlayer.reset();
+            dashPlayer = null;
+          }
+          video.removeAttribute("src");
+          video.load();
+        }
+
+        function playHls(url) {
+          if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = url;
+            video.addEventListener(
+              "error",
+              function onNativeError() {
+                video.removeEventListener("error", onNativeError);
+                fail("Native HLS playback failed.");
+              },
+              { once: true },
+            );
+            setHint("HLS loaded (native). Press play.", false);
+            return;
+          }
+
+          if (!(window.Hls && window.Hls.isSupported())) {
+            fail("HLS is not supported in this browser.");
+            return;
+          }
+
+          hlsPlayer = new window.Hls({ enableWorker: true });
+          hlsPlayer.loadSource(url);
+          hlsPlayer.attachMedia(video);
+          hlsPlayer.on(window.Hls.Events.MANIFEST_PARSED, function () {
+            setHint("HLS manifest loaded. Press play.", false);
+          });
+          hlsPlayer.on(window.Hls.Events.ERROR, function (_event, data) {
+            if (data && data.fatal) {
+              fail("HLS.js error: " + data.type + " / " + data.details);
+            }
+          });
+        }
+
+        function playDash(url) {
+          if (!(window.dashjs && window.dashjs.MediaPlayer)) {
+            fail("dash.js failed to load.");
+            return;
+          }
+
+          dashPlayer = window.dashjs.MediaPlayer().create();
+          dashPlayer.initialize(video, url, false);
+          dashPlayer.updateSettings({
+            streaming: {
+              lowLatencyEnabled: false
+            }
+          });
+          dashPlayer.on(window.dashjs.MediaPlayer.events.STREAM_INITIALIZED, function () {
+            setHint("DASH manifest loaded. Press play.", false);
+          });
+          dashPlayer.on(window.dashjs.MediaPlayer.events.ERROR, function (event) {
+            const message = event && event.error ? JSON.stringify(event.error) : "Unknown dash.js error";
+            fail("dash.js error: " + message);
+          });
+        }
+
+        async function main() {
+          if (!src && v) {
+            const catalogResolved = await resolveSourceFromCatalog(v, typeParam);
+            src = catalogResolved || shortAliasForSlug(v, typeParam);
+          }
+
+          if (!src) {
+            srcText.textContent = "missing ?v=... or ?src=...";
+            typeText.textContent = "unknown";
+            return;
+          }
+
+          src = normalizeSource(src);
+          srcText.textContent = src;
+
+          try {
+            const detectedType = await detectManifestType(src);
+            typeText.textContent = detectedType;
+            teardown();
+
+            if (detectedType === "hls") {
+              playHls(src);
+              return;
+            }
+
+            if (detectedType === "dash") {
+              playDash(src);
+              return;
+            }
+
+            fail("Unsupported manifest type: " + detectedType);
+          } catch (error) {
+            typeText.textContent = typeParam || "unknown";
+            fail(error instanceof Error ? error.message : String(error));
+          }
+        }
+
+        main();
+      })();
+    </script>
+  </body>
+</html>
